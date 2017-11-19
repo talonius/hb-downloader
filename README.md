@@ -1,3 +1,9 @@
+# Question!
+
+How many of use Windows vs. Linux to run this software?  I have an idea to accommodate the CAPTCHA and make the downloader more interactive, but I don't have the expertise to create it on Linux -- thus will only do it if you guys are using Windows.
+
+Please let me know at bmschkerke@gmail.com which OS you use and if you'd be interested.
+
 # hb-downloader
 An automated utility to download your Humble Bundle purchases with support for the Authy token.
 
