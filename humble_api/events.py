@@ -69,7 +69,7 @@ class Events(object):
             :return:  The new value for the current_percentage, if it is modified.
         """
         percentage = current / total * 100
-        percentage -= percentage % 10
+        percentage -= percentage % 0.01
         if current_percentage < percentage:
             current_percentage = percentage
             Events.trigger(Events.EVENT_PROGRESS, current_percentage)
