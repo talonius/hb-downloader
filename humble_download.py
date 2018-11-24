@@ -266,6 +266,9 @@ class HumbleDownload(object):
                         current_download.platform, False):
                     continue
                 for current_dl_struct in current_download.download_structs:
+                    if "flac" in current_dl_struct.filename:
+                        print("no flacs: skipping: " + current_dl_struct.filename)
+                        continue
                     hd = HumbleDownload(current_download,
                                         current_dl_struct,
                                         current_order,
