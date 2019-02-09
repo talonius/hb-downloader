@@ -1,13 +1,11 @@
-# download-location: /mnt/Storage/HumbleBundle/Games/
-cookie-filename: cookies.txt
-username: <enter your username here>
-password: <enter your password here>
+# For authentication, paste a session cookie from your browser here, in single quotes
+session-cookie: ''
 download-location: \\megatron\mila\Games\Humble Bundle\
 chunk-size: 8192000
 force_md5: False
 write_md5: True
 read_md5: True
-debug: True
+debug: False
 
 default_headers:
   Accept: application/json
