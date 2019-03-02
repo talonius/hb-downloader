@@ -6,8 +6,7 @@ import subprocess
 from hb_downloader.config_data import ConfigData
 from hb_downloader.configuration import Configuration
 
-actions = ["download", "list"]
-
+actions = ["download", "download-product", "list"]
 
 def test_help():
     # Check that the script runs and displays the help text without errors
@@ -22,12 +21,23 @@ def test_parse_to_config():
     """
         Checks that parameters gets parsed correctly to config
     """
-    for platform in Configuration.cmdline_platform:
-        for action in actions:
+    test_platforms = Configuration.cmdline_platform.copy()
+    test_platforms.pop('all', None)
+    for action in ["download", "list"]:
+        # testing 'all'
+        sys.argv = ["", action, 'all']
+        Configuration.load_configuration("hb-downloader-settings.yaml")
+        Configuration.parse_command_line()
+        for platform in Configuration.cmdline_platform['all']:
+            print("checking if %s is enabled when 'all' is specified" % platform)
+            assert(ConfigData.download_platforms.get(platform) is True)
+
+        # testing specific platforms except 'all'
+        for platform in test_platforms:
             sys.argv = ["", action, platform]
             Configuration.load_configuration("hb-downloader-settings.yaml")
             Configuration.parse_command_line()
-            for platform_all in Configuration.cmdline_platform:
+            for platform_all in test_platforms:
                 # iterate even on non selected platforms
                 for hb_platform in Configuration.cmdline_platform.get(
                         platform_all):
@@ -45,6 +55,35 @@ def test_parse_to_config():
                                "been for %s %s") %
                               (hb_platform, action, platform))
                         assert(False)
+
+
+def test_single_download_to_config():
+    """
+        Tests downloading a single product by product key
+    """
+    sys.argv = ["", "download-product", "ABCdeFGhIjKL"]
+    Configuration.load_configuration("hb-downloader-settings.yaml")
+    Configuration.parse_command_line()
+    assert(ConfigData.action == "download-product")
+    for platform in Configuration.cmdline_platform['all']:
+        print("checking if %s is enabled as it should" % platform)
+        assert(ConfigData.download_platforms.get(platform) is True)
+    assert(ConfigData.download_product == 'ABCdeFGhIjKL')
+
+
+def test_single_url_to_config():
+    """
+        Tests downloading a product by product url which you'd find in your
+        confirmation email
+    """
+    sys.argv = ["", "download-product", "https://www.humblebundle.com/?key=mNoPqRsTuVW&guard=ABCDEF"]
+    Configuration.load_configuration("hb-downloader-settings.yaml")
+    Configuration.parse_command_line()
+    assert(ConfigData.action == "download-product")
+    for platform in Configuration.cmdline_platform['all']:
+        print("checking if %s is enabled as it should" % platform)
+        assert(ConfigData.download_platforms.get(platform) is True)
+    assert(ConfigData.download_product == 'mNoPqRsTuVW')
 
 
 def test_simple_parse_to_config():

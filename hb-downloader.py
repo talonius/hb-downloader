@@ -52,6 +52,12 @@ logger.display_message(False, "Processing", "%s orders found." %
 
 if ConfigData.action == "download":
     Action.batch_download(hapi, game_keys)
+elif ConfigData.action == "download-product":
+    if ConfigData.download_product in game_keys:
+        Action.batch_download(hapi, [ConfigData.download_product])
+    else:
+        exit("Specified product key '" + ConfigData.download_product + "' was not found. These are the valid keys:\n" +
+            ', '.join(game_keys))
 else:
     Action.list_downloads(hapi, game_keys)
 

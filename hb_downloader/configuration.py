@@ -3,6 +3,8 @@
 import argparse
 import os
 import yaml
+from urllib.parse import urlparse
+from urllib.parse import parse_qs
 from hb_downloader import logger
 from hb_downloader.config_data import ConfigData
 from hb_downloader.humble_api.humble_hash import HumbleHash
@@ -13,10 +15,15 @@ __license__ = "MIT"
 
 
 class Configuration(object):
-    cmdline_platform = {  # Mapping between hb convention and ours
-            'games': ['android', 'asmjs', 'linux', 'mac', 'windows'],
-            'ebooks': ['ebook'],
-            'audio': ['audio']}
+    cmdline_platform = {}  # Mapping between hb convention and ours
+
+    @staticmethod
+    def init_platforms():
+        c = Configuration.cmdline_platform
+        c['games'] = ['android', 'asmjs', 'linux', 'mac', 'windows']
+        c['ebooks'] = ['ebook']
+        c['audio'] = ['audio']
+        c['all'] = c['games'] + c['ebooks'] + c['audio']
 
     @staticmethod
     def validate_configuration():
@@ -111,6 +118,15 @@ class Configuration(object):
                         "override the configuration file. If no further "
                         "parameters are specified, this will default to "
                         "downloading everything in the library."))
+        a_product = sub.add_parser(
+                "download-product", help=(
+                        "You can narrow downloading down to the product level. "
+                        "This would be one single bundle. "))
+
+        a_product.add_argument(
+            dest="download_product",
+            help="Product Key (looks like a bunch of garbled letters)"
+            )
 
         for action in [a_list, a_download]:
             item_type = action.add_subparsers(title="type", dest="item_type")
@@ -120,6 +136,7 @@ class Configuration(object):
                             "linux", "mac", "windows", "android", "asmjs"])
             item_type.add_parser("ebooks")
             item_type.add_parser("audio")
+            item_type.add_parser("all")
 
         a_list.add_argument(
                 "-u", "--print-url", action="store_true", dest="print_url",
@@ -143,7 +160,15 @@ class Configuration(object):
             args.print_url = False
 
         if args.action is not None:
-            if args.platform is None:
+            if args.action == "download-product":
+                args.platform = None
+                ConfigData.download_product = args.download_product
+                url = urlparse(args.download_product)
+                qs = parse_qs(url.query)
+                if qs and qs['key']:
+                    ConfigData.download_product = qs['key'][0]
+
+            elif args.platform is None:
                 args.platform = Configuration.cmdline_platform.get(
                         args.item_type)
             for platform in ConfigData.download_platforms:
@@ -206,3 +231,5 @@ class Configuration(object):
         HumbleHash.read_md5 = ConfigData.read_md5
         HumbleHash.force_md5 = ConfigData.force_md5
         HumbleHash.chunk_size = ConfigData.chunk_size
+
+Configuration.init_platforms()

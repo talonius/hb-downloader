@@ -5,6 +5,7 @@ import requests
 from hb_downloader.config_data import ConfigData
 from hb_downloader.humble_api.events import Events
 from hb_downloader.humble_api.humble_hash import HumbleHash
+from hb_downloader import logger
 
 __author__ = "Brian Schkerke"
 __copyright__ = "Copyright 2016 Brian Schkerke"
@@ -260,6 +261,8 @@ class HumbleDownload(object):
         """Returns a list of HumbleDownload objetcts from a key string"""
         humble_downloads = []
         current_order = hapi.get_order(key)
+        logger.display_message(False, "Processing",
+            "{0} is product: {1}".format(key, current_order.product.human_name))
         for current_subproduct in current_order.subproducts or []:
             for current_download in current_subproduct.downloads or []:
                 if not ConfigData.download_platforms.get(

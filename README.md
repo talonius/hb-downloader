@@ -95,3 +95,18 @@ products.  The easiest fix is to export an environment variable so that Python
 knows the terminal can accept Unicode:
 
     set PYTHONIOENCODING=UTF-8
+
+## Usage examples
+
+```sh
+# Both of these will just download all the stuff according to your config files
+hb-downloader.py
+hb-downloader.py download
+
+# lists all your products (bundles) and subproducts (the )
+hb-downloader.py list
+
+# will download a single bundle either from email link or game-key
+hb-downloader.py download-product <get your bundle url from an email>
+hb-downloader.py download-product <product key>
+```
