@@ -154,7 +154,7 @@ class HumbleHash(object):
             return
 
         md5full_filename = HumbleHash.md5filename(full_filename)
-        local_filename = os.path.basename(md5full_filename)
+        local_filename = os.path.basename(full_filename)
 
         if os.path.exists(md5full_filename):
             os.remove(md5full_filename)
