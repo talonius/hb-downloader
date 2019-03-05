@@ -11,11 +11,11 @@ actions = ["download", "list"]
 
 def test_help():
     # Check that the script runs and displays the help text without errors
-    subprocess.check_output(["python3", "hb-downloader.py", "-h"])
+    subprocess.check_output([sys.executable, "hb-downloader.py", "-h"])
 
     # Check the same with basic actions
     for a in actions:
-        subprocess.check_output(["python3", "hb-downloader.py", a, "-h"])
+        subprocess.check_output([sys.executable, "hb-downloader.py", a, "-h"])
 
 
 def test_parse_to_config():
