@@ -12,6 +12,7 @@ class ConfigData(object):
     action = ""
     print_url = False
     download_location = ""
+    folderstructure_OrderName = True
     debug = False
     auth_sess_cookie = ""
     write_md5 = True
