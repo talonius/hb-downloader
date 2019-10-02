@@ -33,7 +33,7 @@ Configuration.push_configuration()
 validation_status, message = Configuration.validate_configuration()
 if not validation_status:
     logger.display_message(False, "Error", message)
-    exit("Invalid configuration.  Please check your command line arguments and"
+    exit("Invalid configuration.  Please check your command line arguments and "
          "hb-downloader-settings.yaml.")
 
 # Initialize the event handlers.
