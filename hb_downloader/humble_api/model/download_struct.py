@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 from .base_model import BaseModel
 from urllib.parse import urlparse
+from email.utils import parsedate
+from datetime import datetime
+import requests
 
 __author__ = "Joel Pedraza"
 __copyright__ = "Copyright 2014, Joel Pedraza"
@@ -19,9 +22,11 @@ class DownloadStruct(BaseModel):
         human_size:  A human readable size for the item.
         file_size:  A machine readable size for the item.  This is used during MD5 calculations.
         small:  0 or 1.  Unknown purpose.
+        timestamp: a date & time. Used for displaying 'Updated' info on web page
+        last_modified: value taken from file URL, useful for files that have no timestamp
     """
 
-    def __init__(self, data):
+    def __init__(self, data, get_extra_file_info=False):
         """
             Parameterized constructor for the DownloadStruct object.
 
@@ -44,6 +49,39 @@ class DownloadStruct(BaseModel):
         if url_dictionary is not None:
             self.download_web = url_dictionary.get("web", None)
             self.download_bittorrent = url_dictionary.get("bittorrent", None)
+
+        # if a download url is available get the file timestamp from the server, this cannot
+        #  be used when the API timestamp (see below) is not set.
+        # NOTE: this *drastically* increases time required to get all data, so is only done if
+        #       specficially requested
+        # NOTE: in some cases last_modified is different to timestamp by a day or so (probably
+        #       due to uploading later than expected)
+        if get_extra_file_info and (self.download_web is not None):
+            file_info_response = requests.Session().request("HEAD", self.download_web)
+            if file_info_response.status_code == requests.codes.ok:
+                self.last_modified = file_info_response.headers.get('Last-Modified', None)
+
+        if self.last_modified is not None:
+            # convert date to ISO 8601 format, ignore time portion
+            # NOTE: this could be made simpler by not use email.utils and parsing it directly, using
+            #       email.utils allows for parsing values more robustly and will catch edge cases
+            #       that direct parsing may not
+            self.last_modified = datetime(*parsedate(self.last_modified)[:6]).strftime('%Y-%m-%d')
+        else:
+            # to make other code simpler store the 'epoch' date for
+            # anything that doesn't have a date
+            self.last_modified = '1970-01-01'
+
+        # timestamp is relatively new addition to the API, not all files have it set
+        self.timestamp = data.get("timestamp", None)
+        if self.timestamp is not None:
+            # convert date to ISO 8601 format, ignore time portion
+            self.timestamp = datetime.fromtimestamp(self.timestamp).strftime('%Y-%m-%d')
+        else:
+            # to make other code simpler store the 'epoch' date for
+            # anything that doesn't have a date
+            self.timestamp = '1970-01-01'
+
         self.filename = self.__determine_filename()
 
     def __determine_filename(self):

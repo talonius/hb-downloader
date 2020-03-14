@@ -24,7 +24,7 @@ class Subproduct(BaseModel):
         icon:  The icon to be displayed for the subproduct.
     """
 
-    def __init__(self, data):
+    def __init__(self, data, get_extra_file_info=False):
         """
             Parameterized constructor for the Subproduct object.
 
@@ -36,7 +36,7 @@ class Subproduct(BaseModel):
         self.machine_name = data.get("machine_name", None)
         self.url = data.get("url", None)
         self.payee = Payee(data["payee"])
-        self.downloads = [Download(download) for download in data["downloads"]]
+        self.downloads = [Download(download, get_extra_file_info) for download in data["downloads"]]
         self.human_name = data.get("human_name", None)
         self.custom_download_page_box_html = data.get("custom_download_page_box_html", None)
         self.icon = data.get("icon", None)

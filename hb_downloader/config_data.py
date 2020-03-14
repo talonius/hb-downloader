@@ -20,6 +20,7 @@ class ConfigData(object):
     chunk_size = 8192000
     ignore_md5 = False
     resume_downloads = True
+    get_extra_file_info = False
 
     download_platforms = {
         'audio': True,

@@ -110,7 +110,7 @@ class HumbleApi(object):
         # We didn't get a list, or an error message
         raise HumbleResponseException("Unexpected response body", request=response.request, response=response)
 
-    def get_order(self, order_id, *args, **kwargs):
+    def get_order(self, order_id, get_extra_file_info=False, *args, **kwargs):
         """
             Download an order by its ID.
 
@@ -136,7 +136,7 @@ class HumbleApi(object):
 
         # The helper function should be sufficient to catch any other errors
         if self.__authenticated_response_helper(response, data):
-            return Order(data)
+            return Order(data, get_extra_file_info)
 
     def _request(self, *args, **kwargs):
         """

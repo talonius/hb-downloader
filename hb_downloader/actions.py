@@ -14,7 +14,7 @@ class Action:
     def list_downloads(hapi, game_keys):
         for key in game_keys:
             selector_matched_key_once = False
-            current_order = hapi.get_order(key)
+            current_order = hapi.get_order(key, ConfigData.get_extra_file_info)
 
             for current_subproduct in current_order.subproducts or []:
                 selector_matched_subproduct_once = False
@@ -33,11 +33,15 @@ class Action:
                         selector_matched_subproduct_once = True
                         print("\t%s" % current_subproduct.human_name)
                     for dl_struct in current_download.download_structs:
-                        string = "\t\t%s\t%s\t%s\t%s" % (
+                        string = "\t\t%s\t%s\t%s\t%s\t%s" % (
                                 current_download.platform,
                                 current_download.machine_name,
                                 dl_struct.name,
-                                dl_struct.human_size)
+                                dl_struct.human_size,
+                                dl_struct.timestamp)
+                        if ConfigData.get_extra_file_info:
+                            string = "%s\t%s" % (string,
+                                                 dl_struct.last_modified)
                         if ConfigData.print_url:
                             string = "%s\t%s" % (string,
                                                  dl_struct.download_web)

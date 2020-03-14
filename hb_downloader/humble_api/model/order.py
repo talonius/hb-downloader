@@ -16,7 +16,7 @@ class Order(BaseModel):
         products which were a part of the order.
     """
 
-    def __init__(self, data):
+    def __init__(self, data, get_extra_file_info=False):
         """
             Parameterized constructor for the Order object.
 
@@ -33,7 +33,7 @@ class Order(BaseModel):
         self.created = data.get("created", None)
         self.amount_to_charge = data.get("amount_to_charge", None)
         self.gamekey = data.get("gamekey", None)
-        self.subproducts = ([Subproduct(prod) for prod in data.get("subproducts", [])]) or None
+        self.subproducts = ([Subproduct(prod, get_extra_file_info) for prod in data.get("subproducts", [])]) or None
 
         # Former fields that I couldn't locate in my output:
         #   thankname, claimed, country, giftee, leaderboard, owner_username
