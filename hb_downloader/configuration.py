@@ -67,6 +67,8 @@ class Configuration(object):
                 "debug", ConfigData.debug)
         ConfigData.download_location = saved_config.get(
                 "download-location", ConfigData.download_location)
+        ConfigData.folderstructure_OrderName = saved_config.get(
+                "folderstructure_OrderName", ConfigData.folderstructure_OrderName)
         ConfigData.auth_sess_cookie = saved_config.get(
                 "session-cookie", ConfigData.auth_sess_cookie)
         ConfigData.resume_downloads = saved_config.get(
@@ -92,6 +94,10 @@ class Configuration(object):
         parser.add_argument("-dl", "--download_location",
                             default=ConfigData.download_location, type=str,
                             help="Location to store downloaded files.")
+        parser.add_argument("-fldr", "--folderstructure_OrderName",
+                            default=ConfigData.folderstructure_OrderName, action="store_false",
+                            help=("Folder Structure :"
+                                  "                   group by OrderName defauld=True"))
         parser.add_argument(
                 "-cs", "--chunksize", default=ConfigData.chunk_size, type=int,
                 help=("The size to use when calculating MD5s and downloading"
@@ -210,6 +216,9 @@ class Configuration(object):
         logger.display_message(
                 True, "Config", "download_location=%s" %
                 ConfigData.download_location)
+        logger.display_message(
+                True, "Config", "folderstructure_OrderName=%s" %
+                ConfigData.folderstructure_OrderName)
         logger.display_message(
                 True, "Config", "chunksize=%s" % ConfigData.chunk_size)
         logger.display_message(

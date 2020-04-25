@@ -88,8 +88,21 @@ class HumbleDownload(object):
 
             :return:  The full path and filename for the current download.
         """
-        return os.path.join(ConfigData.download_location, self.subproduct_name,
-                            self.platform, self.filename)
+
+        # TODO HK: add options for path structure from commandline and or cfg file
+        
+        if not ConfigData.folderstructure_OrderName:
+            temp_full_filename = os.path.join(
+                ConfigData.download_location,
+				self.subproduct_name, self.platform,
+				self.filename)
+        else:
+            temp_full_filename = os.path.join(
+                ConfigData.download_location,
+                self.product_name_machine, self.subproduct_name, self.platform,
+                self.filename)
+        
+        return temp_full_filename
 
     def remove(self):
         """
@@ -191,8 +204,16 @@ class HumbleDownload(object):
         """ Creates the directory for storing the current file if it doesn't
             exist.
         """
+        
+        # TODO HK: add options for path structure from commandline and or cfg file
+
+        # full_directory = os.path.join(ConfigData.download_location,
+        #                               self.order_number, self.subproduct_name, self.platform)
+        
         full_directory = os.path.join(ConfigData.download_location,
-                                      self.subproduct_name, self.platform)
+                                      self.product_name_machine, self.subproduct_name, self.platform)
+
+
         if not os.path.exists(full_directory):
             os.makedirs(full_directory)
 

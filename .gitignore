@@ -1,3 +1,4 @@
 /.coverage
 /.pytest_cache/
 __pycache__/
+.vscode/.ropeproject/config.py
