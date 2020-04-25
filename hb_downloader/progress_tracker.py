@@ -3,13 +3,18 @@
 from hb_downloader import logger
 
 __author__ = "Brian Schkerke"
-__copyright__ = "Copyright 2016 Brian Schkerke"
+__copyright__ = "Copyright 2020 Brian Schkerke"
 __license__ = "MIT"
 
 import time
 start_time = None
 
 class ProgressTracker(object):
+    """
+        Helps with tracking progress, and determining what to output, when.
+    """
+    # TODO:  Make this class' output resemble wget/curl.
+    
     item_count_current = 0
     item_count_total = 0
 
@@ -22,12 +27,20 @@ class ProgressTracker(object):
 
     @staticmethod
     def assign_download(hd):
+        """
+            Translates a Humble Download object to a tracked download.
+            
+            :param hd: The Humble Download to be tracked.
+        """
         ProgressTracker.current_product = hd.product_name
         ProgressTracker.current_subproduct = hd.subproduct_name
         ProgressTracker.current_download = hd.machine_name
 
     @staticmethod
     def display_summary():
+        """
+            Displays the current tracked download's progress.
+        """
         global start_time
         if start_time:
             elapsed = time.time() - start_time
@@ -59,6 +72,9 @@ class ProgressTracker(object):
 
     @staticmethod
     def reset():
+        """
+            Resets all of the progress trackers.
+        """
         ProgressTracker.item_count_total = 0
         ProgressTracker.item_count_current = 0
         ProgressTracker.download_size_current = 0
@@ -69,6 +85,11 @@ class ProgressTracker(object):
 
     @staticmethod
     def format_filesize(filesize):
+        """
+            Translates a filesize into "human readable" format.
+            
+            :param filesize: The filesize to be converted.
+        """
         prefixes = [' bytes', ' KiB', ' MiB', ' GiB', ' TiB']
         index_level = 0
 
@@ -85,6 +106,12 @@ class ProgressTracker(object):
 
     @staticmethod
     def format_seconds(seconds, bytecount, speed):
+        """
+            
+            :param seconds:
+            :param bytecount:
+            :param speed:
+        """
         if not seconds:
             return ProgressTracker.format_seconds(bytecount / speed, 1, speed) + f" estimated @ {ProgressTracker.format_filesize(speed)}/s"
         seconds = int(seconds)
@@ -116,6 +143,12 @@ class ProgressTracker(object):
 
     @staticmethod
     def format_percentage(current, total):
+        """
+            Formats a percentage based on the current vs. total byte count.
+            
+            :param current: The current number of bytes.
+            :param total: The total number of bytes.
+        """
         if total == 0:
             return "0.00%"
         else:

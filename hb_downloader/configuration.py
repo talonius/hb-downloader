@@ -10,7 +10,7 @@ from hb_downloader.config_data import ConfigData
 from hb_downloader.humble_api.humble_hash import HumbleHash
 
 __author__ = "Brian Schkerke"
-__copyright__ = "Copyright 2016 Brian Schkerke"
+__copyright__ = "Copyright 2020 Brian Schkerke"
 __license__ = "MIT"
 
 
@@ -34,11 +34,11 @@ class Configuration(object):
             :return:  None
         """
         if not os.path.exists(ConfigData.download_location):
-            return False, "Download location doesn't exist"
+            return False, "Download location (%s) doesn't exist" % ConfigData.download_location
 
         if not os.access(ConfigData.download_location, os.W_OK | os.X_OK):
             return False, (
-                    "Download location is not writable by the current user.")
+                    "Download location (%s) is not writable by the current user." % ConfigData.download_location)
 
         return True, ""
 
@@ -97,7 +97,7 @@ class Configuration(object):
         parser.add_argument("-fldr", "--folderstructure_OrderName",
                             default=ConfigData.folderstructure_OrderName, action="store_false",
                             help=("Folder Structure :"
-                                  "                   group by OrderName defauld=True"))
+                                  "                   group by OrderName default=True"))
         parser.add_argument(
                 "-cs", "--chunksize", default=ConfigData.chunk_size, type=int,
                 help=("The size to use when calculating MD5s and downloading"

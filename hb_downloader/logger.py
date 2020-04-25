@@ -5,9 +5,8 @@ import time
 import sys
 
 __author__ = "Brian Schkerke"
-__copyright__ = "Copyright 2016 Brian Schkerke"
+__copyright__ = "Copyright 2020 Brian Schkerke"
 __license__ = "MIT"
-
 
 def display_message(is_debug, category, user_message, add_crlf=True):
     """
@@ -31,7 +30,7 @@ def display_message(is_debug, category, user_message, add_crlf=True):
                              (time.strftime("%Y/%m/%d %I:%M:%S"),
                               category.rjust(category_width), user_message))
         
-        #Print the output also to a logfile
+        # Print the output also to a logfile
         logfile = open("hb-downloader_" + time.strftime("%Y-%m-%d") + ".log", 'a')
         print(formatted_message, file = logfile)
         logfile.close()

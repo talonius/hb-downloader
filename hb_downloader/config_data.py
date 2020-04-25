@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 __author__ = "Brian Schkerke"
-__copyright__ = "Copyright 2016 Brian Schkerke"
+__copyright__ = "Copyright 2020 Brian Schkerke"
 __license__ = "MIT"
 
 
@@ -23,7 +23,8 @@ class ConfigData(object):
     resume_downloads = True
     download_product = "-not specified-"
     get_extra_file_info = False
-
+    config_filename = "hb-downloader-settings.yaml"
+    
     download_platforms = {
         'audio': True,
         'ebook': True,

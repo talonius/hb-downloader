@@ -8,7 +8,7 @@ from hb_downloader.humble_api.humble_hash import HumbleHash
 from hb_downloader import logger
 
 __author__ = "Brian Schkerke"
-__copyright__ = "Copyright 2016 Brian Schkerke"
+__copyright__ = "Copyright 2020 Brian Schkerke"
 __license__ = "MIT"
 
 def format_filesize(filesize):

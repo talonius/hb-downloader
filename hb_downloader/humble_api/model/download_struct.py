@@ -44,7 +44,8 @@ class DownloadStruct(BaseModel):
         self.kindle_friendly = data.get("kindle_friendly", None)
         self.download_web = None
         self.download_bittorrent = None
-
+        self.last_modified = None
+        
         url_dictionary = data.get("url", None)
         if url_dictionary is not None:
             self.download_web = url_dictionary.get("web", None)
