@@ -4,3 +4,4 @@ __pycache__/
 .vscode/.ropeproject/config.py
 .idea/
 hb-downloader-settings.yaml
+*.log
