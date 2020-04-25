@@ -27,7 +27,7 @@ print("This script is running from and logging to %s" % os.getcwd())
 print("")
 
 # Determine which configuration file we want to use.
-user_config_filename = "~/.config/%s" % ConfigData.config_filename
+user_config_filename = os.path.expanduser("~/.config/%s" % ConfigData.config_filename)
 system_config_filename = "/etc/%s" % ConfigData.config_filename
 local_config_filename = "%s/%s" % (os.getcwd(), ConfigData.config_filename)
 final_config_filename = None
