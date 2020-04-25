@@ -21,7 +21,7 @@ class Download(BaseModel):
         download_structs:  The definitions of the actual download locations.
     """
 
-    def __init__(self, data):
+    def __init__(self, data, get_extra_file_info=False):
         """
             Parameterized constructor for the Download object.
 
@@ -31,7 +31,7 @@ class Download(BaseModel):
 
         self.machine_name = data.get("machine_name", None)
         self.platform = data.get("platform", None)
-        self.download_structs = [DownloadStruct(struct) for struct in data["download_struct"]]
+        self.download_structs = [DownloadStruct(struct, get_extra_file_info) for struct in data["download_struct"]]
         self.options_dict = data["options_dict"]
         self.download_identifier = data.get("download_identifier", None)
         self.download_version_number = data.get("download_version_number", None)

@@ -7,8 +7,8 @@ __license__ = "MIT"
 
 
 class ConfigData(object):
-    VERSION = "0.5.0"
-    BUG_REPORT_URL = "https://github.com/MayeulC/hb-downloader/issues"
+    VERSION = "0.6.0"
+    BUG_REPORT_URL = "https://github.com/talonius/hb-downloader/issues"
     action = ""
     print_url = False
     download_location = ""
@@ -21,6 +21,7 @@ class ConfigData(object):
     ignore_md5 = False
     resume_downloads = True
     download_product = "-not specified-"
+    get_extra_file_info = False
 
     download_platforms = {
         'audio': True,

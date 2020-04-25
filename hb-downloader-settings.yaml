@@ -6,6 +6,7 @@ force_md5: False
 write_md5: True
 read_md5: True
 debug: False
+get_extra_file_info: False
 
 default_headers:
   Accept: application/json
@@ -25,4 +26,3 @@ download-platforms:
   linux: True
   android: True
   asmjs: False
-

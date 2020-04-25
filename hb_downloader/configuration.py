@@ -73,6 +73,8 @@ class Configuration(object):
                 "resume_downloads", ConfigData.resume_downloads)
         ConfigData.ignore_md5 = saved_config.get(
                 "ignore_md5", ConfigData.ignore_md5)
+        ConfigData.get_extra_file_info = saved_config.get(
+                "get_extra_file_info", ConfigData.get_extra_file_info)
 
     @staticmethod
     def parse_command_line():
@@ -213,6 +215,9 @@ class Configuration(object):
         logger.display_message(
                 True, "Config", "resume_downloads=%s" %
                 ConfigData.resume_downloads)
+        logger.display_message(
+                True, "Config", "get_extra_file_info=%s" %
+                ConfigData.get_extra_file_info)
 
         for platform in list(ConfigData.download_platforms.keys()):
             logger.display_message(
