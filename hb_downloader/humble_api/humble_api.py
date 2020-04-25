@@ -6,6 +6,7 @@ from .model.order import Order
 import requests
 from .exceptions.humble_response_exception import HumbleResponseException
 from .exceptions.humble_parse_exception import HumbleParseException
+from .exceptions.humble_authentication_exception import HumbleAuthenticationException
 
 __author__ = "Joel Pedraza"
 __copyright__ = "Copyright 2014, Joel Pedraza"

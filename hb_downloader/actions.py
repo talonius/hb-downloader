@@ -58,7 +58,7 @@ class Action:
         # Platforms that are turned off are filtered here, and the download
         # size is computed. Checksums are also calculated for finished
         # downloads. This initial query could be paralelized for speed gains
-        for key in game_keys:
+        for key in game_keys[::-1]:
             ProgressTracker.item_count_current += 1
             logger.display_message(
                     False, "Processing",

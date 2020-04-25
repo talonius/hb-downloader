@@ -6,6 +6,8 @@ __author__ = "Brian Schkerke"
 __copyright__ = "Copyright 2016 Brian Schkerke"
 __license__ = "MIT"
 
+import time
+start_time = None
 
 class ProgressTracker(object):
     item_count_current = 0
@@ -26,7 +28,17 @@ class ProgressTracker(object):
 
     @staticmethod
     def display_summary():
-        progress_message = "%d/%d DL: %s/%s (%s)" % (
+        global start_time
+        if start_time:
+            elapsed = time.time() - start_time
+            fasts = ProgressTracker.download_size_current / elapsed
+            remaining = (ProgressTracker.download_size_total - ProgressTracker.download_size_current) / fasts
+        else:
+            start_time = time.time()
+            remaining = None
+            fasts = 1024**2
+
+        progress_message = "%d/%d DL: %s/%s (%s, %s)" % (
                 ProgressTracker.item_count_current,
                 ProgressTracker.item_count_total,
                 ProgressTracker.format_filesize(
@@ -35,7 +47,8 @@ class ProgressTracker(object):
                         ProgressTracker.download_size_total),
                 ProgressTracker.format_percentage(
                         ProgressTracker.download_size_current,
-                        ProgressTracker.download_size_total))
+                        ProgressTracker.download_size_total),
+                ProgressTracker.format_seconds(remaining, ProgressTracker.download_size_total, fasts))
 
         logger.display_message(False, "Progress", progress_message)
         logger.display_message(
@@ -56,7 +69,7 @@ class ProgressTracker(object):
 
     @staticmethod
     def format_filesize(filesize):
-        prefixes = ['B', 'KiB', 'MiB', 'GiB', 'TiB']
+        prefixes = [' bytes', ' KiB', ' MiB', ' GiB', ' TiB']
         index_level = 0
 
         while abs(filesize / 1024) > 1 and index_level < len(prefixes) - 1:
@@ -64,11 +77,42 @@ class ProgressTracker(object):
             filesize /= 1024
 
         try:
-            size = "%d%s" % (filesize, prefixes[index_level])
+            size = "%.2f%s" % (filesize, prefixes[index_level])
         except:
             size = "unknown"
             pass
         return size
+
+    @staticmethod
+    def format_seconds(seconds, bytecount, speed):
+        if not seconds:
+            return ProgressTracker.format_seconds(bytecount / speed, 1, speed) + f" estimated @ {ProgressTracker.format_filesize(speed)}/s"
+        seconds = int(seconds)
+        if seconds < 90:
+            return f"{seconds}s left @ {ProgressTracker.format_filesize(speed)}/s"
+        minutes = int(seconds / 60)
+        seconds %= 60
+        if minutes < 90:
+            return f"{minutes}m {seconds}s left @ {ProgressTracker.format_filesize(speed)}/s"
+        hours = int(minutes / 60)
+        minutes %= 60
+        if hours < 30:
+            return f"{hours}h {minutes}m left @ {ProgressTracker.format_filesize(speed)}/s"
+        days = int(hours / 24)
+        hours %= 24
+        if days < 7:
+            return f"{days}d {hours}h {minutes}m left @ {ProgressTracker.format_filesize(speed)}/s"
+        weeks = int(days / 7)
+        if weeks < 3:
+            days %= 7
+            return f"{weeks}w {days}d {hours}h left @ {ProgressTracker.format_filesize(speed)}/s"
+        months = int(days / 30)
+        if months < 15:
+            days %= 30
+            return f"{months}m {days}d left @ {ProgressTracker.format_filesize(speed)}/s"
+        years = int(days / 365)
+        days %= 365
+        return f"{years}y {days}d left @ {ProgressTracker.format_filesize(speed)}/s"
 
     @staticmethod
     def format_percentage(current, total):

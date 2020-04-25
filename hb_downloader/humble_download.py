@@ -11,6 +11,23 @@ __author__ = "Brian Schkerke"
 __copyright__ = "Copyright 2016 Brian Schkerke"
 __license__ = "MIT"
 
+def format_filesize(filesize):
+    prefixes = [' bytes', ' KiB', ' MiB', ' GiB', ' TiB']
+    index_level = 0
+
+    if not filesize:
+        return None
+
+    while abs(filesize / 1024) > 1 and index_level < len(prefixes) - 1:
+        index_level += 1
+        filesize /= 1024
+
+    try:
+        size = "%.2f%s" % (filesize, prefixes[index_level])
+    except:
+        size = "unknown"
+        pass
+    return size
 
 class HumbleDownload(object):
     order_number = ""
@@ -33,7 +50,7 @@ class HumbleDownload(object):
         self.download_url = cds.download_web
         self.filename = cds.filename
         self.humble_file_size = cds.file_size
-        self.humble_file_size_human = cds.human_size
+        self.humble_file_size_human = format_filesize(cds.file_size) or cds.human_size
         self.platform = cd.platform
         self.product_name = co.product.human_name
         self.product_name_machine = co.product.machine_name
@@ -290,6 +307,9 @@ class HumbleDownload(object):
                         current_download.platform, False):
                     continue
                 for current_dl_struct in current_download.download_structs:
+                    if "flac" in current_dl_struct.filename:
+                        print("no flacs: skipping: " + current_dl_struct.filename)
+                        continue
                     hd = HumbleDownload(current_download,
                                         current_dl_struct,
                                         current_order,

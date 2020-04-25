@@ -30,6 +30,12 @@ def display_message(is_debug, category, user_message, add_crlf=True):
         formatted_message = ("[%s] [%s] %s" %
                              (time.strftime("%Y/%m/%d %I:%M:%S"),
                               category.rjust(category_width), user_message))
+        
+        #Print the output also to a logfile
+        logfile = open("hb-downloader_" + time.strftime("%Y-%m-%d") + ".log", 'a')
+        print(formatted_message, file = logfile)
+        logfile.close()
+        
         if add_crlf:
             print(formatted_message)
         else:
