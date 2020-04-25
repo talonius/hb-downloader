@@ -18,7 +18,7 @@ It is distributed under the MIT license, you may use, modify and redistribute
 it freely provided you agree with the terms of that license, that can be found
 online or under the accompanying LICENSE file.
 
-This is a fork with additionnal functionnality and fixes of the software
+This is a fork with additional functionality and fixes of the software
 originally distributed by Brian Schkerke and available at
 https://github.com/talonius/hb-downloader
 
@@ -58,7 +58,7 @@ Perform one of the following actions:
 ## Installation
 After getting the installation files, you then need to fetch your
 authentication cookie from humblebundle.com.  To do so, navigate there, log in
-and press F12 to open the developper tools of your browser. Navigate to the
+and press F12 to open the developer tools of your browser. Navigate to the
 cookies tab, and look for a cookie named `_simple_auth` (on the
 humblebundle.com domain). Copy the value inside the
 `hb-downloader-settings.yaml` file, or specify it on the command line with the
