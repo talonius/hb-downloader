@@ -23,7 +23,7 @@ print("This program is not affiliated nor endorsed by Humble Bundle, Inc.")
 print("For any suggestion or bug report, please create an issue at:\n%s" %
       ConfigData.BUG_REPORT_URL)
 print("")
-print("This script is running from and logging to %s", os.getcwd())
+print("This script is running from and logging to %s" % os.getcwd())
 print("")
 
 # Determine which configuration file we want to use.
