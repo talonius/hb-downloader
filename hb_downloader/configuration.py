@@ -55,6 +55,10 @@ class Configuration(object):
 
         ConfigData.download_platforms = saved_config.get(
                 "download-platforms", ConfigData.download_platforms)
+        ConfigData.audio_types = saved_config.get(
+                "audio_types", ConfigData.audio_types)
+        ConfigData.ebook_types = saved_config.get(
+                "ebook_types", ConfigData.ebook_types)
         ConfigData.write_md5 = saved_config.get(
                 "write_md5", ConfigData.write_md5)
         ConfigData.read_md5 = saved_config.get(
@@ -232,6 +236,16 @@ class Configuration(object):
             logger.display_message(
                     True, "Config", "Platform %s=%s" %
                     (platform, ConfigData.download_platforms[platform]))
+
+        for atype in list(ConfigData.audio_types.keys()):
+            logger.display_message(
+                    True, "Config", "Audio Types %s=%s" %
+                    (atype, ConfigData.audio_types[atype]))
+
+        for etypes in list(ConfigData.ebook_types.keys()):
+            logger.display_message(
+                    True, "Config", "ebook Types %s=%s" %
+                    (etypes, ConfigData.ebook_types[etypes]))
 
     @staticmethod
     def push_configuration():
