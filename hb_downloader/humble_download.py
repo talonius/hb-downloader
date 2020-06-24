@@ -226,9 +226,13 @@ class HumbleDownload(object):
 
         # full_directory = os.path.join(ConfigData.download_location,
         #                               self.order_number, self.subproduct_name, self.platform)
-        
-        full_directory = os.path.join(ConfigData.download_location,
-                                      self.product_name_machine, self.subproduct_name, self.platform)
+
+        if not ConfigData.folderstructure_OrderName:
+            full_directory = os.path.join(ConfigData.download_location,
+            				              self.subproduct_name, self.platform)
+        else:
+            full_directory = os.path.join(ConfigData.download_location,
+                                          self.product_name_machine, self.subproduct_name, self.platform)
 
 
         if not os.path.exists(full_directory):
