@@ -335,7 +335,7 @@ class HumbleDownload(object):
                         current_download.platform, False):
                     continue
                 for current_dl_struct in current_download.download_structs:
-                    if download_is_excluded(current_download.platform, current_dl_struct.filename):
+                    if HumbleDownload.download_is_excluded(current_download.platform, current_dl_struct.filename):
                         print("skipping excluded download: " +
                               current_dl_struct.filename)
                         continue
