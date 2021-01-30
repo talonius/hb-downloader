@@ -24,7 +24,9 @@ class ConfigData(object):
     download_product = "-not specified-"
     get_extra_file_info = False
     config_filename = "hb-downloader-settings.yaml"
-    
+    max_file_size = None
+    file_extensions = None
+
     download_platforms = {
         'audio': True,
         'ebook': True,
