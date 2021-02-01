@@ -175,11 +175,13 @@ class HumbleDownload(object):
 
         Events.trigger(Events.EVENT_DOWNLOAD_START, self.filename)
 
-        if ConfigData.resume_downloads and self.local_file_size > 0:
-            self.__resume_download()
-        else:
-            self.__start_download()
-
+        try:
+            if ConfigData.resume_downloads and self.local_file_size > 0:
+                self.__resume_download()
+            else:
+                self.__start_download()
+        except Exception as ex:
+            logger.display_message(False, "Download", "Download of %s failed: %s" % (self.filename, ex))
         Events.trigger(Events.EVENT_DOWNLOAD_END, self.filename)
 
     def __resume_download(self):
