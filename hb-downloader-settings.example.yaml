@@ -7,6 +7,9 @@ write_md5: True
 read_md5: True
 debug: False
 get_extra_file_info: False
+# max file size in MB
+max-file-size: 1000
+
 
 default_headers:
   Accept: application/json
@@ -26,3 +29,9 @@ download-platforms:
   linux: True
   android: True
   asmjs: False
+
+# Only files with the following extensions are downloaded (or
+# everything when not configured):
+file-extensions:
+  - .mobi
+  - .pdf

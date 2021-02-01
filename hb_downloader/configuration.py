@@ -77,6 +77,10 @@ class Configuration(object):
                 "ignore_md5", ConfigData.ignore_md5)
         ConfigData.get_extra_file_info = saved_config.get(
                 "get_extra_file_info", ConfigData.get_extra_file_info)
+        ConfigData.file_extensions = saved_config.get(
+                "file-extensions", ConfigData.file_extensions)
+        ConfigData.max_file_size = saved_config.get(
+                "max-file-size", ConfigData.max_file_size)
 
     @staticmethod
     def parse_command_line():
@@ -228,10 +232,20 @@ class Configuration(object):
                 True, "Config", "get_extra_file_info=%s" %
                 ConfigData.get_extra_file_info)
 
+        if ConfigData.max_file_size:
+            logger.display_message(
+                True, "Config", "max_file_size=%s" %
+                ConfigData.max_file_size)
+
         for platform in list(ConfigData.download_platforms.keys()):
             logger.display_message(
                     True, "Config", "Platform %s=%s" %
                     (platform, ConfigData.download_platforms[platform]))
+
+        if ConfigData.file_extensions:
+            logger.display_message(
+                True, "Config", "file_extensions=%s" %
+                ConfigData.file_extensions)
 
     @staticmethod
     def push_configuration():
