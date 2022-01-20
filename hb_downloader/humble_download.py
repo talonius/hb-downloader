@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import os
 import requests
+import re
 from hb_downloader.config_data import ConfigData
 from hb_downloader.humble_api.events import Events
 from hb_downloader.humble_api.humble_hash import HumbleHash
@@ -168,6 +169,12 @@ class HumbleDownload(object):
         """ Downloads a file from the location specified in the provided
             DownloadStruct.
         """
+        
+        #TODO: make this dynamic and settable in the config + commandline
+        x = re.search(".epub", self.filename)
+        if x == None:
+            return
+
         self.__create_directory()
 
         if not ConfigData.resume_downloads:
