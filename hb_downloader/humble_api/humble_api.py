@@ -98,6 +98,8 @@ class HumbleApi(object):
             :raises HumbleResponseException: if the response was invalid
         """
         response = self._request("GET", HumbleApi.ORDER_LIST_URL, *args, **kwargs)
+        if response.status_code == 401:
+            raise Exception("Authentication failed, check your session cookie!")
 
         """ get_gamekeys response always returns JSON """
         data = self.__parse_data(response)

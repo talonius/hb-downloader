@@ -107,7 +107,7 @@ class HumbleDownload(object):
         """
 
         # TODO HK: add options for path structure from commandline and or cfg file
-        
+
         if not ConfigData.folderstructure_OrderName:
             temp_full_filename = os.path.join(
                 ConfigData.download_location,
@@ -118,7 +118,7 @@ class HumbleDownload(object):
                 ConfigData.download_location,
                 self.product_name_machine, self.subproduct_name, self.platform,
                 self.filename)
-        
+
         return temp_full_filename
 
     def remove(self):
@@ -175,11 +175,13 @@ class HumbleDownload(object):
 
         Events.trigger(Events.EVENT_DOWNLOAD_START, self.filename)
 
-        if ConfigData.resume_downloads and self.local_file_size > 0:
-            self.__resume_download()
-        else:
-            self.__start_download()
-
+        try:
+            if ConfigData.resume_downloads and self.local_file_size > 0:
+                self.__resume_download()
+            else:
+                self.__start_download()
+        except Exception as ex:
+            logger.display_message(False, "Download", "Download of %s failed: %s" % (self.filename, ex))
         Events.trigger(Events.EVENT_DOWNLOAD_END, self.filename)
 
     def __resume_download(self):
@@ -221,7 +223,7 @@ class HumbleDownload(object):
         """ Creates the directory for storing the current file if it doesn't
             exist.
         """
-        
+
         # TODO HK: add options for path structure from commandline and or cfg file
 
         # full_directory = os.path.join(ConfigData.download_location,
@@ -307,9 +309,22 @@ class HumbleDownload(object):
                         current_download.platform, False):
                     continue
                 for current_dl_struct in current_download.download_structs:
-                    if "flac" in current_dl_struct.filename:
-                        print("no flacs: skipping: " + current_dl_struct.filename)
+                    # Check maximun file size
+                    if (ConfigData.max_file_size and
+                        current_dl_struct.file_size is not None and
+                        current_dl_struct.file_size / 1048576 > ConfigData.max_file_size):
                         continue
+
+                    # Check file extensions
+                    if ConfigData.file_extensions:
+                        fn_lower = current_dl_struct.filename.lower()
+                        ext_ok = False
+                        for ext in ConfigData.file_extensions:
+                            if fn_lower.endswith(ext.lower()):
+                                ext_ok = True
+                        if not ext_ok:
+                            continue
+
                     hd = HumbleDownload(current_download,
                                         current_dl_struct,
                                         current_order,
